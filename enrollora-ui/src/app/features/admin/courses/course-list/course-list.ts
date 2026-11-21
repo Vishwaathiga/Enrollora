@@ -28,6 +28,8 @@ export class CourseListComponent implements OnInit {
 
   showForm = signal(false);
   isSaving = signal(false);
+  editingCourseId = signal<number | null>(null);
+  formErrorMessage = signal('');
 
   course: SaveCourseRequest = this.emptyCourse();
 
@@ -47,44 +49,92 @@ export class CourseListComponent implements OnInit {
 
   openAddForm(): void {
     this.course = this.emptyCourse();
+    this.editingCourseId.set(null);
+    this.formErrorMessage.set('');
     this.errorMessage.set('');
     this.successMessage.set('');
     this.showForm.set(true);
   }
 
-  closeForm(): void {
-    this.showForm.set(false);
-  }
-
-  saveCourse(): void {
+  openEditForm(course: CourseResponse): void {
+    this.formErrorMessage.set('');
     this.errorMessage.set('');
     this.successMessage.set('');
 
+    this.courseService.getCourseById(course.courseId).subscribe({
+      next: (response) => {
+        this.course = {
+          courseName: response.courseName,
+          duration: response.duration,
+          fees: response.fees,
+          capacity: response.capacity,
+          isActive: response.isActive,
+        };
+
+        this.editingCourseId.set(response.courseId);
+        this.showForm.set(true);
+      },
+      error: (error) => {
+        console.error('Error loading course:', error);
+        this.errorMessage.set('Unable to load course details.');
+      },
+    });
+  }
+
+  closeForm(): void {
+    this.showForm.set(false);
+    this.editingCourseId.set(null);
+    this.formErrorMessage.set('');
+  }
+
+  saveCourse(): void {
+    this.formErrorMessage.set('');
+
     if (!this.course.courseName.trim() || !this.course.duration.trim()) {
-      this.errorMessage.set('Please enter course name and duration.');
+      this.formErrorMessage.set('Please enter course name and duration.');
       return;
     }
 
     if (this.course.fees < 0 || this.course.capacity < 1) {
-      this.errorMessage.set('Fees cannot be negative and capacity must be at least 1.');
+      this.formErrorMessage.set(
+        'Fees cannot be negative and capacity must be at least 1.'
+      );
       return;
     }
 
+    const request: SaveCourseRequest = {
+      ...this.course,
+      courseName: this.course.courseName.trim(),
+      duration: this.course.duration.trim(),
+    };
+
     this.isSaving.set(true);
 
-    this.courseService.createCourse(this.course).subscribe({
+    const courseId = this.editingCourseId();
+
+    const saveRequest = courseId === null
+      ? this.courseService.createCourse(request)
+      : this.courseService.updateCourse(courseId, request);
+
+    saveRequest.subscribe({
       next: () => {
         this.isSaving.set(false);
         this.showForm.set(false);
-        this.successMessage.set('Course added successfully!');
-        this.pageNumber.set(1);
+
+        this.successMessage.set(
+          courseId === null
+            ? 'Course added successfully!'
+            : 'Course updated successfully!'
+        );
+
+        this.editingCourseId.set(null);
         this.loadCourses();
       },
       error: (error) => {
-        console.error('Error adding course:', error);
+        console.error('Error saving course:', error);
         this.isSaving.set(false);
-        this.errorMessage.set(
-          error.error?.message || 'Unable to add course. Please try again.'
+        this.formErrorMessage.set(
+          error.error?.message || 'Unable to save course. Please try again.'
         );
       },
     });
@@ -92,6 +142,7 @@ export class CourseListComponent implements OnInit {
 
   loadCourses(): void {
     this.isLoading.set(true);
+    this.errorMessage.set('');
 
     this.courseService.getCourses(this.pageNumber(), this.pageSize()).subscribe({
       next: (response) => {

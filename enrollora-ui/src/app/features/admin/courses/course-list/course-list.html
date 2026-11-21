@@ -9,7 +9,7 @@
 @if (showForm()) {
   <div class="course-form-overlay">
     <div class="course-form">
-      <h2>Add New Course</h2>
+     <h2>{{ editingCourseId() === null ? 'Add New Course' : 'Edit Course' }}</h2>
       <p>Enter the details of the new course.</p>
 
       <form (ngSubmit)="saveCourse()">
@@ -55,17 +55,16 @@
           <option [ngValue]="false">Inactive</option>
         </select>
 
-        @if (errorMessage()) {
-          <p class="form-error">{{ errorMessage() }}</p>
-        }
-
+       @if (formErrorMessage()) {
+  <p class="form-error">{{ formErrorMessage() }}</p>
+}
         <div class="form-actions">
           <button type="button" class="btn-cancel" (click)="closeForm()">
             Cancel
           </button>
 
           <button type="submit" class="btn-save" [disabled]="isSaving()">
-            {{ isSaving() ? 'Saving...' : 'Save Course' }}
+           {{ isSaving() ? 'Saving...' : (editingCourseId() === null ? 'Save Course' : 'Update Course') }}
           </button>
         </div>
       </form>
@@ -161,6 +160,7 @@
               <th>ENROLLMENT</th>
               <th>AVAILABLE SEATS</th>
               <th>STATUS</th>
+              <th>ACTIONS</th>
             </tr>
           </thead>
 
@@ -223,6 +223,15 @@
                     {{ course.isActive ? 'Active' : 'Inactive' }}
                   </span>
                 </td>
+                <td>
+  <button
+    type="button"
+    class="btn-edit"
+    (click)="openEditForm(course)"
+  >
+    Edit
+  </button>
+</td>
               </tr>
             }
           </tbody>

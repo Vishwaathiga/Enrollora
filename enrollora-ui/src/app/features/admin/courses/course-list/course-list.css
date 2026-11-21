@@ -587,3 +587,21 @@
   color: #dc4444;
   font-size: 13px;
 }
+
+/* Edit Course Button */
+
+.btn-edit {
+  background: #f0eaff;
+  color: #8050d8;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-edit:hover {
+  background: #e2d5ff;
+}
