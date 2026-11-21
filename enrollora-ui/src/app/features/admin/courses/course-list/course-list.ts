@@ -81,6 +81,37 @@ export class CourseListComponent implements OnInit {
     });
   }
 
+
+deactivateCourse(course: CourseResponse): void {
+  const confirmed = window.confirm(
+    `Are you sure you want to deactivate ${course.courseName}?`
+  );
+
+  if (!confirmed) {
+    return;
+  }
+
+  this.errorMessage.set('');
+  this.successMessage.set('');
+
+  this.courseService.deactivateCourse(course.courseId).subscribe({
+    next: () => {
+      this.successMessage.set(
+        `${course.courseName} deactivated successfully!`
+      );
+
+      this.loadCourses();
+    },
+    error: (error) => {
+      console.error('Error deactivating course:', error);
+
+      this.errorMessage.set(
+        error.error?.message || 'Unable to deactivate course.'
+      );
+    },
+  });
+}
+
   closeForm(): void {
     this.showForm.set(false);
     this.editingCourseId.set(null);

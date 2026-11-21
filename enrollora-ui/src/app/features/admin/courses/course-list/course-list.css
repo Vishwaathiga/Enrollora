@@ -605,3 +605,42 @@
 .btn-edit:hover {
   background: #e2d5ff;
 }
+
+/* Course Actions */
+
+.course-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-deactivate {
+  background: #ffe8e8;
+  color: #dc4444;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-deactivate:hover {
+  background: #ffd5d5;
+}
+
+.inactive-label {
+  color: #898397;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.form-success {
+  background: #e9f8ef;
+  color: #16834a;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 18px;
+}
