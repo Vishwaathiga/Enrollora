@@ -1,0 +1,304 @@
+:host {
+  display: block;
+  color: #29213f;
+}
+
+.cancellation-page {
+  width: 100%;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.eyebrow {
+  color: #8953e8;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+}
+
+.page-header h1 {
+  margin: 8px 0;
+  color: #291743;
+  font-size: 27px;
+  font-weight: 850;
+}
+
+.page-header p {
+  margin: 0;
+  color: #8c819d;
+  font-size: 14px;
+}
+
+.header-icon {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: #f0eaff;
+  color: #8050e8;
+  font-size: 27px;
+}
+
+.summary-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 300px;
+  padding: 22px;
+  margin-bottom: 25px;
+  background: #ffffff;
+  border: 1px solid #eee7f8;
+  border-radius: 15px;
+}
+
+.summary-card span {
+  color: #81758f;
+  font-size: 13px;
+}
+
+.summary-card h2 {
+  margin: 8px 0 0;
+  color: #291743;
+  font-size: 29px;
+}
+
+.summary-icon {
+  width: 45px;
+  height: 45px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: #f2edff;
+  font-size: 21px;
+}
+
+.table-card {
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #eee7f8;
+  border-radius: 15px;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  min-width: 1000px;
+  border-collapse: collapse;
+}
+
+thead {
+  background: #f8f6fc;
+}
+
+th {
+  padding: 17px 15px;
+  color: #746783;
+  font-size: 12px;
+  font-weight: 800;
+  text-align: left;
+  white-space: nowrap;
+}
+
+td {
+  padding: 18px 15px;
+  border-top: 1px solid #f0ebf6;
+  color: #51465f;
+  font-size: 13px;
+  vertical-align: middle;
+}
+
+.student-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.student-info strong {
+  color: #302044;
+  font-size: 13px;
+}
+
+.student-info small {
+  color: #958aa2;
+  font-size: 11px;
+}
+
+.reason-cell {
+  max-width: 220px;
+  white-space: normal;
+  line-height: 1.5;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 6px 11px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.status-badge.pending {
+  background: #fff4df;
+  color: #bd7a13;
+}
+
+.status-badge.approved {
+  background: #e7f8ef;
+  color: #16834c;
+}
+
+.status-badge.rejected {
+  background: #fff0ed;
+  color: #d94b42;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 7px;
+}
+
+.action-buttons button {
+  padding: 8px 11px;
+  border: 0;
+  border-radius: 7px;
+  font-size: 11px;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.approve-btn {
+  background: #e7f8ef;
+  color: #16834c;
+}
+
+.reject-btn {
+  background: #fff0ed;
+  color: #d94b42;
+}
+
+.action-buttons button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.completed-label {
+  color: #8c819d;
+  font-size: 12px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  padding: 18px;
+  border-top: 1px solid #f0ebf6;
+  color: #8c819d;
+  font-size: 12px;
+}
+
+.pagination-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pagination-actions button {
+  padding: 8px 13px;
+  border: 1px solid #e4dced;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #55466b;
+  cursor: pointer;
+}
+
+.pagination-actions button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.state-card {
+  padding: 45px 20px;
+  background: #ffffff;
+  border: 1px solid #eee7f8;
+  border-radius: 15px;
+  text-align: center;
+}
+
+.state-card h3 {
+  margin: 12px 0 6px;
+  color: #302044;
+}
+
+.state-card p {
+  color: #8c819d;
+  font-size: 13px;
+}
+
+.empty-icon {
+  font-size: 35px;
+}
+
+.loader {
+  width: 30px;
+  height: 30px;
+  margin: 0 auto;
+  border: 3px solid #eee7f8;
+  border-top-color: #8953e8;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.alert {
+  padding: 13px 16px;
+  margin-bottom: 18px;
+  border-radius: 9px;
+  font-size: 13px;
+}
+
+.success-alert {
+  background: #e7f8ef;
+  color: #16834c;
+}
+
+.error-alert {
+  background: #fff0ed;
+  color: #d94b42;
+}
+
+.error-alert button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  border: 1px solid #f1b7af;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #d94b42;
+  cursor: pointer;
+}
+
+@media (max-width: 700px) {
+  .page-header h1 {
+    font-size: 22px;
+  }
+
+  .pagination {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

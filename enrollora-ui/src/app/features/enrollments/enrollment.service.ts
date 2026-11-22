@@ -1,3 +1,4 @@
+
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -8,6 +9,8 @@ import {
   CreateEnrollmentRequest,
   EnrollmentFilter,
   EnrollmentResponse,
+  CreateCancellationRequest,
+  CancellationResponse,
 } from './enrollment.models';
 
 @Injectable({
@@ -16,6 +19,7 @@ import {
 export class EnrollmentService {
   private readonly http = inject(HttpClient);
   private readonly apiUrl = `${environment.apiUrl}/enrollments`;
+  private readonly cancellationUrl = `${environment.apiUrl}/cancellation-requests`;
 
   getEnrollments(
     pageNumber = 1,
@@ -71,6 +75,63 @@ export class EnrollmentService {
     return this.http.post<EnrollmentResponse>(this.apiUrl, request);
   }
 
+  getMyCancellationRequests(
+    pageNumber = 1,
+    pageSize = 100,
+  ): Observable<PagedResult<CancellationResponse>> {
+    const params = new HttpParams()
+      .set('pageNumber', pageNumber)
+      .set('pageSize', pageSize);
+
+    return this.http.get<PagedResult<CancellationResponse>>(
+      `${this.cancellationUrl}/my`,
+      { params },
+    );
+  }
+
+  createCancellationRequest(
+    enrollmentId: number,
+    request: CreateCancellationRequest,
+  ): Observable<CancellationResponse> {
+    return this.http.post<CancellationResponse>(
+      `${this.apiUrl}/${enrollmentId}/cancellation-request`,
+      request,
+    );
+  }
+
+  getCancellationRequests(
+  pageNumber = 1,
+  pageSize = 10,
+): Observable<PagedResult<CancellationResponse>> {
+  const params = new HttpParams()
+    .set('pageNumber', pageNumber)
+    .set('pageSize', pageSize);
+
+  return this.http.get<PagedResult<CancellationResponse>>(
+    this.cancellationUrl,
+    { params },
+  );
+}
+
+approveCancellationRequest(
+  id: number,
+  adminRemarks: string | null,
+): Observable<CancellationResponse> {
+  return this.http.put<CancellationResponse>(
+    `${this.cancellationUrl}/${id}/approve`,
+    { adminRemarks },
+  );
+}
+
+rejectCancellationRequest(
+  id: number,
+  adminRemarks: string | null,
+): Observable<CancellationResponse> {
+  return this.http.put<CancellationResponse>(
+    `${this.cancellationUrl}/${id}/reject`,
+    { adminRemarks },
+  );
+}
   private buildParams(
     pageNumber: number,
     pageSize: number,

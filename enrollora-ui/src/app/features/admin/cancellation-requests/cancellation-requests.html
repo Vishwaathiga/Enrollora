@@ -1,0 +1,151 @@
+<div class="cancellation-page">
+  <div class="page-header">
+    <div>
+      <span class="eyebrow">ENROLLMENT MANAGEMENT</span>
+      <h1>Cancellation Requests</h1>
+      <p>Review and manage student course cancellation requests.</p>
+    </div>
+
+    <div class="header-icon">↻</div>
+  </div>
+
+  <div class="summary-card">
+    <div>
+      <span>Total Requests</span>
+      <h2>{{ totalRecords() }}</h2>
+    </div>
+    <div class="summary-icon">📋</div>
+  </div>
+
+  @if (successMessage()) {
+    <div class="alert success-alert">
+      {{ successMessage() }}
+    </div>
+  }
+
+  @if (errorMessage()) {
+    <div class="alert error-alert">
+      {{ errorMessage() }}
+      <button (click)="loadRequests()">Retry</button>
+    </div>
+  }
+
+  @if (isLoading()) {
+    <div class="state-card">
+      <div class="loader"></div>
+      <p>Loading cancellation requests...</p>
+    </div>
+  } @else if (!errorMessage()) {
+    @if (requests().length === 0) {
+      <div class="state-card">
+        <span class="empty-icon">📭</span>
+        <h3>No cancellation requests</h3>
+        <p>There are currently no requests to review.</p>
+      </div>
+    } @else {
+      <div class="table-card">
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Student</th>
+                <th>Course</th>
+                <th>Reason</th>
+                <th>Requested On</th>
+                <th>Status</th>
+                <th>Admin Remarks</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              @for (request of requests(); track request.cancellationRequestId) {
+                <tr>
+                  <td>
+                    <div class="student-info">
+                      <strong>{{ request.studentName }}</strong>
+                      <small>{{ request.studentEmail }}</small>
+                    </div>
+                  </td>
+
+                  <td>{{ request.courseName }}</td>
+
+                  <td class="reason-cell">{{ request.reason }}</td>
+
+                  <td>
+                    {{ request.requestedAt | date: 'dd MMM yyyy' }}
+                  </td>
+
+                  <td>
+                    <span
+                      class="status-badge"
+                      [class.pending]="request.status === 0"
+                      [class.approved]="request.status === 1"
+                      [class.rejected]="request.status === 2"
+                    >
+                      {{ statusLabel(request.status) }}
+                    </span>
+                  </td>
+
+                  <td>
+                    {{ request.adminRemarks || '—' }}
+                  </td>
+
+                  <td>
+                    @if (request.status === 0) {
+                      <div class="action-buttons">
+                        <button
+                          class="approve-btn"
+                          [disabled]="processingId() !== null"
+                          (click)="approve(request)"
+                        >
+                          {{ processingId() === request.cancellationRequestId
+                            ? 'Processing...'
+                            : 'Approve' }}
+                        </button>
+
+                        <button
+                          class="reject-btn"
+                          [disabled]="processingId() !== null"
+                          (click)="reject(request)"
+                        >
+                          Reject
+                        </button>
+                      </div>
+                    } @else {
+                      <span class="completed-label">Reviewed</span>
+                    }
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pagination">
+          <span>
+            Showing {{ requests().length }} of {{ totalRecords() }} requests
+          </span>
+
+          <div class="pagination-actions">
+            <button
+              (click)="previousPage()"
+              [disabled]="pageNumber() === 1"
+            >
+              Previous
+            </button>
+
+            <span>{{ pageNumber() }} / {{ totalPages() }}</span>
+
+            <button
+              (click)="nextPage()"
+              [disabled]="pageNumber() >= totalPages()"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      </div>
+    }
+  }
+</div>

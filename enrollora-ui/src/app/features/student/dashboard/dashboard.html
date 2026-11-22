@@ -94,12 +94,12 @@
                   <small>{{ enrollment.enrolledAt | date: 'dd MMM yyyy' }}</small>
                 </div>
                 <span
-                  class="status-badge"
-                  [class.active]="enrollment.status === 1"
-                  [class.cancelled]="enrollment.status !== 1"
-                >
-                  {{ statusLabel(enrollment.status) }}
-                </span>
+  class="status-badge"
+  [class.active]="enrollment.status === 0"
+  [class.cancelled]="enrollment.status === 1"
+>
+  {{ statusLabel(enrollment.status) }}
+</span>
               </article>
             }
           </div>
