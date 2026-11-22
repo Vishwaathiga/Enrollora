@@ -3,10 +3,27 @@ import { authGuard } from './core/guards/auth-guard';
 import { roleGuard } from './core/guards/role-guard';
 
 export const routes: Routes = [
-  {
-    path: 'login',
-    loadComponent: () => import('./features/auth/login/login').then((m) => m.Login),
-  },
+ 
+{
+  path: 'login',
+  loadComponent: () =>
+    import('./features/auth/login-selection/login-selection').then(
+      (m) => m.LoginSelection,
+    ),
+},
+{
+  path: 'admin-login',
+  data: { role: 'Administrator' },
+  loadComponent: () =>
+    import('./features/auth/login/login').then((m) => m.Login),
+},
+{
+  path: 'student-login',
+  data: { role: 'Student' },
+  loadComponent: () =>
+    import('./features/auth/login/login').then((m) => m.Login),
+},
+
   {
     path: 'register',
     loadComponent: () => import('./features/auth/register/register').then((m) => m.Register),
