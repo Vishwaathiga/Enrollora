@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal,  ChangeDetectionStrategy, } from '@angular/core';
 
 import { CourseResponse } from '../../../admin/courses/course.models';
 import { CourseService } from '../../../admin/courses/course.service';
@@ -12,6 +12,7 @@ import { EnrollmentService } from '../../enrollment.service';
   imports: [CommonModule],
   styleUrl: './available-courses.css',
   templateUrl: './available-courses.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AvailableCourses implements OnInit {
   private readonly courseService = inject(CourseService);

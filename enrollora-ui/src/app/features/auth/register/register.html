@@ -1,3 +1,4 @@
+
 <div class="register-page">
   <div class="register-card">
     <!-- Header -->
@@ -149,16 +150,16 @@
       </div>
 
       <!-- Success Message -->
-      @if (successMessage) {
+      @if (successMessage()) {
         <div class="alert alert-success py-2">
-          {{ successMessage }}
+          {{ successMessage() }}
         </div>
       }
 
       <!-- Error Message -->
-      @if (errorMessage) {
+      @if (errorMessage()) {
         <div class="alert alert-danger py-2">
-          {{ errorMessage }}
+          {{ errorMessage() }}
         </div>
       }
 
@@ -166,9 +167,9 @@
       <button
         type="submit"
         class="btn btn-primary w-100 mt-2"
-        [disabled]="registerForm.invalid || isLoading"
+        [disabled]="registerForm.invalid || isLoading()"
       >
-        @if (isLoading) {
+        @if (isLoading()) {
           Registering...
         } @else {
           Create Account

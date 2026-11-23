@@ -1,5 +1,10 @@
 
-import { Component, inject } from '@angular/core';
+import {
+  Component,
+  inject,
+  signal,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../core/auth/auth.service';
 import { LoginRequest } from '../../../core/auth/auth.models';
@@ -8,9 +13,10 @@ import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 @Component({
   selector: 'app-login',
   standalone: true,
-imports: [FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink],
   templateUrl: './login.html',
   styleUrl: './login.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Login {
   private authService = inject(AuthService);
@@ -24,21 +30,22 @@ export class Login {
     password: '',
   };
 
-  isLoading = false;
-  errorMessage = '';
+  isLoading = signal(false);
+  errorMessage = signal('');
 
   onLogin(): void {
-    this.isLoading = true;
-    this.errorMessage = '';
+    this.isLoading.set(true);
+    this.errorMessage.set('');
 
     this.authService.login(this.loginRequest).subscribe({
       next: (response) => {
-        this.isLoading = false;
+        this.isLoading.set(false);
 
         if (response.role !== this.expectedRole) {
           this.authService.logout();
-          this.errorMessage =
-            `This account cannot access the ${this.expectedRole === 'Administrator' ? 'Admin' : 'Student'} Login. Please use the correct login option.`;
+          this.errorMessage.set(
+            `This account cannot access the ${this.expectedRole === 'Administrator' ? 'Admin' : 'Student'} Login. Please use the correct login option.`
+          );
           return;
         }
 
@@ -52,12 +59,13 @@ export class Login {
       error: (error) => {
         console.error('Login failed:', error);
 
-        this.errorMessage =
+        this.errorMessage.set(
           error.error?.detail ||
           error.error?.message ||
-          'Something went wrong. Please try again.';
+          'Something went wrong. Please try again.'
+        );
 
-        this.isLoading = false;
+        this.isLoading.set(false);
       },
     });
   }

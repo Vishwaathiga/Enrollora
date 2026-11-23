@@ -38,18 +38,18 @@
               />
             </div>
 
-            @if (errorMessage) {
+            @if (errorMessage()) {
               <div class="alert alert-danger">
-                {{ errorMessage }}
+                {{ errorMessage() }}
               </div>
             }
 
             <button
               type="submit"
               class="btn btn-primary w-100"
-              [disabled]="loginForm.invalid || isLoading"
+              [disabled]="loginForm.invalid || isLoading()"
             >
-              @if (isLoading) {
+              @if (isLoading()) {
                 Logging in...
               } @else {
                 Login

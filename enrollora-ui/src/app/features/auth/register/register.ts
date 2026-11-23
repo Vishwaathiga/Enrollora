@@ -1,4 +1,10 @@
-import { Component, inject } from '@angular/core';
+
+import {
+  Component,
+  inject,
+  signal,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { AuthService } from '../../../core/auth/auth.service';
@@ -11,10 +17,10 @@ import { Router, RouterLink } from '@angular/router';
   imports: [FormsModule, RouterLink],
   templateUrl: './register.html',
   styleUrl: './register.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Register {
   private authService = inject(AuthService);
-
   private router = inject(Router);
 
   registerRequest: RegisterStudentRequest = {
@@ -26,31 +32,35 @@ export class Register {
     cgpa: 0,
   };
 
-  isLoading = false;
-  successMessage = '';
-  errorMessage = '';
+  isLoading = signal(false);
+  successMessage = signal('');
+  errorMessage = signal('');
 
   onRegister(): void {
-    this.isLoading = true;
-    this.successMessage = '';
-    this.errorMessage = '';
+    this.isLoading.set(true);
+    this.successMessage.set('');
+    this.errorMessage.set('');
 
     this.authService.register(this.registerRequest).subscribe({
       next: (response) => {
-        this.successMessage =
-          'Registration successful! Your account is pending administrator approval. You can log in once your account is approved.';
+        this.successMessage.set(
+          'Registration successful! Your account is pending administrator approval. You can log in once your account is approved.'
+        );
 
-        this.isLoading = false;
+        this.isLoading.set(false);
 
         setTimeout(() => {
           this.router.navigate(['/login']);
         }, 4000);
       },
       error: (error) => {
-        this.errorMessage =
-          error.error?.detail || error.error?.message || 'Registration failed. Please try again.';
+        this.errorMessage.set(
+          error.error?.detail ||
+          error.error?.message ||
+          'Registration failed. Please try again.'
+        );
 
-        this.isLoading = false;
+        this.isLoading.set(false);
 
         console.error('Registration failed:', error);
       },
