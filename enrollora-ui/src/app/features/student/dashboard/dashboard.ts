@@ -1,6 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit, inject, signal } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  inject,
+  signal,
+  computed,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { CourseResponse } from '../../admin/courses/course.models';
@@ -14,6 +21,7 @@ import { EnrollmentService } from '../../enrollments/enrollment.service';
   imports: [CommonModule, RouterLink],
   styleUrl: './dashboard.css',
   templateUrl: './dashboard.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Dashboard implements OnInit {
   private readonly courseService = inject(CourseService);
@@ -25,8 +33,14 @@ export class Dashboard implements OnInit {
   activeEnrollmentCount = signal(0);
   cancelledEnrollmentCount = signal(0);
   totalEnrollmentCount = signal(0);
-  availableCourseCount = signal(0);
-  openSeatCount = signal(0);
+availableCourseCount = computed(() => this.availableCourses().length);
+
+openSeatCount = computed(() =>
+  this.availableCourses().reduce(
+    (total, course) => total + course.availableSeats,
+    0,
+  ),
+);
 
   isLoading = signal(true);
   courseError = signal('');
@@ -58,12 +72,7 @@ export class Dashboard implements OnInit {
             (course) => course.isActive && course.availableSeats > 0,
           );
           this.availableCourses.set(eligibleCourses);
-          this.availableCourseCount.set(
-            eligibleCourses.filter((course) => course.availableSeats > 0).length,
-          );
-          this.openSeatCount.set(
-            eligibleCourses.reduce((total, course) => total + course.availableSeats, 0),
-          );
+         this.availableCourses.set(eligibleCourses);
           courseRequestComplete = true;
           markComplete();
         },

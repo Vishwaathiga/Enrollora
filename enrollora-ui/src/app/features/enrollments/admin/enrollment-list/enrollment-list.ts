@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal,  ChangeDetectionStrategy, } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { EnrollmentService } from '../../enrollment.service';
@@ -10,6 +10,7 @@ import { EnrollmentResponse } from '../../enrollment.models';
   imports: [CommonModule],
   templateUrl: './enrollment-list.html',
   styleUrl: './enrollment-list.css',
+   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EnrollmentListComponent implements OnInit {
   private enrollmentService = inject(EnrollmentService);

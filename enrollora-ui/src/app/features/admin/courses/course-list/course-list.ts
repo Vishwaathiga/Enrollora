@@ -1,5 +1,12 @@
 
-import { Component, OnInit, inject, signal } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  inject,
+  signal,
+  computed,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -12,11 +19,13 @@ import { CourseResponse, SaveCourseRequest } from '../course.models';
   imports: [CommonModule, FormsModule],
   templateUrl: './course-list.html',
   styleUrl: './course-list.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CourseListComponent implements OnInit {
   private courseService = inject(CourseService);
 
   courses = signal<CourseResponse[]>([]);
+  totalDisplayedCourses = computed(() => this.courses().length);
   isLoading = signal(false);
   errorMessage = signal('');
   successMessage = signal('');

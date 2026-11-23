@@ -1,7 +1,7 @@
 
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal ,ChangeDetectionStrategy, } from '@angular/core';
 
 import {
   EnrollmentResponse,
@@ -15,6 +15,7 @@ import { EnrollmentService } from '../../enrollment.service';
   imports: [CommonModule],
   styleUrl: './my-enrollments.css',
   templateUrl: './my-enrollments.html',
+   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MyEnrollments implements OnInit {
   private readonly enrollmentService = inject(EnrollmentService);

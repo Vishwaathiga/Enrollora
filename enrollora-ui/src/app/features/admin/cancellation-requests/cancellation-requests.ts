@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal,  ChangeDetectionStrategy, } from '@angular/core';
 
 import { EnrollmentService } from '../../enrollments/enrollment.service';
 import { CancellationResponse } from '../../enrollments/enrollment.models';
@@ -11,6 +11,7 @@ import { CancellationResponse } from '../../enrollments/enrollment.models';
   imports: [CommonModule],
   templateUrl: './cancellation-requests.html',
   styleUrl: './cancellation-requests.css',
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CancellationRequestsComponent implements OnInit {
   private readonly enrollmentService = inject(EnrollmentService);

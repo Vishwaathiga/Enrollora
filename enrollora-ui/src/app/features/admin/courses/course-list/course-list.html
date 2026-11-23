@@ -18,7 +18,9 @@
   @if (successMessage()) {
     <p class="form-success">{{ successMessage() }}</p>
   }
-
+   <div>
+  Displayed Courses: {{ totalDisplayedCourses() }}
+</div>
   <!-- Add / Edit Course Form -->
   @if (showForm()) {
     <div class="course-form-overlay">
@@ -106,7 +108,9 @@
         <span>Total Courses</span>
         <h2>{{ totalRecords() }}</h2>
       </div>
+   
     </div>
+    
 
     <div class="summary-card orange">
       <div class="summary-icon">📖</div>
