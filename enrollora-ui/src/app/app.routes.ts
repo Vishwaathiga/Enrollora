@@ -66,6 +66,7 @@ export const routes: Routes = [
       (m) => m.CancellationRequestsComponent,
     ),
 },
+
     ],
   },
   {
@@ -94,6 +95,13 @@ export const routes: Routes = [
             (m) => m.MyEnrollments,
           ),
       },
+      {
+  path: 'profile',
+  loadComponent: () =>
+    import('./features/student/profile/student-profile').then(
+      (m) => m.StudentProfile,
+    ),
+},
       {
         path: '',
         redirectTo: 'courses',

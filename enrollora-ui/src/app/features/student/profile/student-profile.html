@@ -1,0 +1,171 @@
+
+<div class="profile-page">
+
+  <div class="profile-heading">
+    <div>
+      <span class="eyebrow">STUDENT PORTAL</span>
+      <h1>My Profile</h1>
+      <p>View and manage your personal information.</p>
+    </div>
+  </div>
+
+  @if (isLoading()) {
+    <div class="message-card">Loading profile...</div>
+  } @else if (errorMessage() && !profile()) {
+    <div class="message-card error-message">
+      {{ errorMessage() }}
+    </div>
+  } @else if (profile(); as student) {
+
+    <div class="profile-card">
+
+      <div class="profile-card-header">
+        <div class="profile-avatar">
+          {{ student.name.charAt(0).toUpperCase() }}
+        </div>
+
+        <div class="profile-identity">
+          <h2>{{ student.name }}</h2>
+          <p>{{ student.email }}</p>
+          <span class="status-badge">
+            {{ student.status === 1 ? 'Approved' : student.status === 0 ? 'Pending' : 'Rejected' }}
+          </span>
+        </div>
+
+        @if (!isEditMode()) {
+          <button type="button" class="edit-button" (click)="enableEdit()">
+            Edit Profile
+          </button>
+        }
+      </div>
+
+      @if (successMessage()) {
+        <div class="message success-message">
+          {{ successMessage() }}
+        </div>
+      }
+
+      @if (errorMessage()) {
+        <div class="message error-message">
+          {{ errorMessage() }}
+        </div>
+      }
+
+      @if (isEditMode()) {
+
+        <form [formGroup]="profileForm" (ngSubmit)="updateProfile()">
+
+          <h3>Edit Personal Information</h3>
+
+          <div class="profile-grid">
+
+            <div class="form-group">
+              <label>Full Name</label>
+              <input type="text" formControlName="name" />
+              @if (profileForm.controls.name.touched && profileForm.controls.name.invalid) {
+                <small class="field-error">Name is required.</small>
+              }
+            </div>
+
+            <div class="form-group">
+              <label>Email Address</label>
+              <input type="email" [value]="student.email" disabled />
+              <small>Email cannot be changed.</small>
+            </div>
+
+            <div class="form-group">
+              <label>Department</label>
+              <input type="text" formControlName="department" />
+              @if (profileForm.controls.department.touched && profileForm.controls.department.invalid) {
+                <small class="field-error">Department is required.</small>
+              }
+            </div>
+
+            <div class="form-group">
+              <label>Age</label>
+              <input type="number" formControlName="age" />
+              @if (profileForm.controls.age.touched && profileForm.controls.age.invalid) {
+                <small class="field-error">Age must be between 17 and 60.</small>
+              }
+            </div>
+
+            <div class="form-group">
+              <label>CGPA</label>
+              <input type="number" step="0.01" formControlName="cgpa" />
+              @if (profileForm.controls.cgpa.touched && profileForm.controls.cgpa.invalid) {
+                <small class="field-error">CGPA must be between 0 and 10.</small>
+              }
+            </div>
+
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="cancel-button" (click)="cancelEdit()">
+              Cancel
+            </button>
+
+            <button type="submit" class="save-button" [disabled]="isSaving()">
+              {{ isSaving() ? 'Saving...' : 'Save Changes' }}
+            </button>
+          </div>
+
+        </form>
+
+      } @else {
+
+        <div class="profile-details">
+          <h3>Personal Information</h3>
+
+          <div class="profile-grid">
+
+            <div class="detail-item">
+              <span>Student ID</span>
+              <strong>{{ student.studentId }}</strong>
+            </div>
+
+            <div class="detail-item">
+              <span>Full Name</span>
+              <strong>{{ student.name }}</strong>
+            </div>
+
+            <div class="detail-item">
+              <span>Email Address</span>
+              <strong>{{ student.email }}</strong>
+            </div>
+
+            <div class="detail-item">
+              <span>Department</span>
+              <strong>{{ student.department }}</strong>
+            </div>
+
+            <div class="detail-item">
+              <span>Age</span>
+              <strong>{{ student.age }}</strong>
+            </div>
+
+            <div class="detail-item">
+              <span>CGPA</span>
+              <strong>{{ student.cgpa | number:'1.2-2' }}</strong>
+            </div>
+
+            <div class="detail-item">
+              <span>Registered Date</span>
+              <strong>{{ student.registeredAt | date:'dd MMM yyyy' }}</strong>
+            </div>
+
+            <div class="detail-item">
+              <span>Reviewed Date</span>
+              <strong>
+                {{ student.reviewedAt ? (student.reviewedAt | date:'dd MMM yyyy') : 'Not reviewed yet' }}
+              </strong>
+            </div>
+
+          </div>
+        </div>
+
+      }
+
+    </div>
+  }
+
+</div>
