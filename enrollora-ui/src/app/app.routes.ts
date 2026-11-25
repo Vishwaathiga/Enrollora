@@ -102,6 +102,13 @@ export const routes: Routes = [
       (m) => m.StudentProfile,
     ),
 },
+{
+  path: 'cancellation-requests',
+  loadComponent: () =>
+    import('./features/student/cancellation-requests/student-cancellation-requests').then(
+      (m) => m.StudentCancellationRequests,
+    ),
+},
       {
         path: '',
         redirectTo: 'courses',

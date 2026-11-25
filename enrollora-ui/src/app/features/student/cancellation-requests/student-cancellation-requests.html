@@ -1,0 +1,101 @@
+
+<div class="cancellation-page">
+  <div class="page-header">
+    <div>
+      <h2>My Cancellation Requests</h2>
+      <p>View the status of your course cancellation requests.</p>
+    </div>
+  </div>
+
+  @if (isLoading()) {
+    <div class="message loading">Loading cancellation requests...</div>
+  }
+
+  @if (errorMessage()) {
+    <div class="message error">{{ errorMessage() }}</div>
+  }
+
+  @if (!isLoading() && !errorMessage()) {
+    @if (cancellationRequests().length === 0) {
+      <div class="empty-state">
+        <h3>No Cancellation Requests</h3>
+        <p>You haven't submitted any course cancellation requests yet.</p>
+        <p>You can request cancellation from the My Enrollments page.</p>
+      </div>
+    } @else {
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Course</th>
+              <th>Reason</th>
+              <th>Requested Date</th>
+              <th>Status</th>
+              <th>Reviewed Date</th>
+              <th>Admin Remarks</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (request of cancellationRequests(); track request.cancellationRequestId) {
+              <tr>
+                <td>{{ request.courseName }}</td>
+                <td>{{ request.reason }}</td>
+                <td>{{ request.requestedAt | date: 'dd MMM yyyy' }}</td>
+
+                <td>
+                  <span
+                    class="status"
+                    [ngClass]="{
+                      pending: request.status === 0,
+                      approved: request.status === 1,
+                      rejected: request.status === 2
+                    }"
+                  >
+                    {{ cancellationStatusLabel(request.status) }}
+                  </span>
+                </td>
+
+                <td>
+                  {{ request.reviewedAt
+                    ? (request.reviewedAt | date: 'dd MMM yyyy')
+                    : '-' }}
+                </td>
+
+                <td>{{ request.adminRemarks || '-' }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pagination">
+        <span>
+          Total Requests: {{ totalRecords() }}
+        </span>
+
+        <div class="pagination-controls">
+          <button
+            type="button"
+            (click)="previousPage()"
+            [disabled]="pageNumber() === 1"
+          >
+            Previous
+          </button>
+
+          <span>
+            Page {{ pageNumber() }} of {{ totalPages() }}
+          </span>
+
+          <button
+            type="button"
+            (click)="nextPage()"
+            [disabled]="pageNumber() >= totalPages()"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    }
+  }
+</div>
